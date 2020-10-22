@@ -1,4 +1,4 @@
-let STORE = [
+const STORE = [
     {name: "apples", checked: false, id:0},
     {name: "oranges", checked: false, id:1},
     {name: "milk", checked: true, id:2},
@@ -50,7 +50,7 @@ function generateItemElement(obj){
 function handleNewItemSubmit(){
     $('#js-shopping-list-form').submit(function (evt) {
         evt.preventDefault()
-        const newName = $(this).find('input[name="shopping-list-entry"]').val()
+        let newName = $(this).find('input[name="shopping-list-entry"]').val()
         addItems(newName)
         renderShoppingList()
     })
@@ -67,6 +67,30 @@ function addItems(newName){
 
 ///////////////////////////////////////////////////////////////////////////////
 
+//function to toggle checked variable in a given item object
+function handleItemCheckClicked(){
+    
+    
+    $('ul.js-shopping-list').on('click','.shopping-item-toggle', function(evt){
+        console.log("handleItemCheckClicked called")
+        evt.preventDefault()
+        let ident = $(this).closest('li').attr('data-item-id')
+        console.log("ident is " + ident)
+        toggleCheckedById(ident)
+        renderShoppingList()
+    })
+}
+
+//subfunction to toggle checked by using item id
+function toggleCheckedById(idToToggle){
+for(let i=0;i<STORE.length;i++){
+    if(idToToggle == STORE[i].id){
+      STORE[i].checked = !STORE[i].checked
+    }}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 //subfunction to create new item in store after being passed the name
 
 /*        //create event listener for adding items
@@ -76,9 +100,7 @@ function addItems(newName){
             addItems(addInput)
         })
         //create event listener and process for checking items
-        $('.shopping-item-toggle').click(function(evt){
-            $(this).closest('li').find('.shopping-item').toggleClass('shopping-item__checked')
-        })
+        
         //create event listener and process for deleting items
         $('.shopping-item-delete').click(function(evt){
            $(this).closest('li').remove()
@@ -89,7 +111,7 @@ function addItems(newName){
 function startShoppingList(){
     renderShoppingList()
     handleNewItemSubmit()
-    //handleItemCheckClicked()
+    handleItemCheckClicked()
     //handleDeleteItemClicked()
 }
 
