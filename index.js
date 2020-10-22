@@ -1,32 +1,36 @@
-const STORE = [
-    {name: "apples", checked: false},
-    {name: "oranges", checked: false},
-    {name: "milk", checked: true},
-    {name: "bread", checked: false}
+let STORE = [
+    {name: "apples", checked: false, id:0},
+    {name: "oranges", checked: false, id:1},
+    {name: "milk", checked: true, id:2},
+    {name: "bread", checked: false, id:3}
   ]
+
+  let numberOfItemsInStore = STORE.length
 
   //function to render the shopping items list
 function renderShoppingList(){
     let shoppingListItems = generateShoppingItems(STORE)
-
     $('.js-shopping-list').html(shoppingListItems)
-    console.log(shoppingListItems)
 }
+
+//////////////////////////////////////////////////////////////////////////////////
+
 //subfunction to create the list from the STORE for all items
 function generateShoppingItems(arr){
     let results = ``
     for(let i=0;i<arr.length;i++){
-        results = results + generateOneItemForList(arr[i])
+        results = results + generateItemElement(arr[i])
     }
     return results
 }
 //subfunction to create one item for the list 
-function generateOneItemForList(obj){
+function generateItemElement(obj){
     let checkthrough = ``
     if(obj.checked === true){
         checkthrough = ` shopping-item__checked`
     }
-    let template =`<li>
+    let template =`<li class="js-item-index-element" 
+    data-item-id="${obj.id}">
     <span class="shopping-item${checkthrough}">${obj.name}</span>
     <div class="shopping-item-controls">
       <button class="shopping-item-toggle">
@@ -40,7 +44,30 @@ function generateOneItemForList(obj){
   return template
 }
 
+//////////////////////////////////////////////////////////////////////////////////
 
+//function to handle the submission of new items
+function handleNewItemSubmit(){
+    $('#js-shopping-list-form').submit(function (evt) {
+        evt.preventDefault()
+        const newName = $(this).find('input[name="shopping-list-entry"]').val()
+        addItems(newName)
+        renderShoppingList()
+    })
+}
+//function to add an item with a given name to the store
+function addItems(newName){
+    let newItem ={}
+    newItem.name = newName
+    newItem.checked = false
+    newItem.id = numberOfItemsInStore
+    STORE.push(newItem)
+    numberOfItemsInStore += 1
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+//subfunction to create new item in store after being passed the name
 
 /*        //create event listener for adding items
         $('#js-shopping-list-form').submit(function (evt) {
@@ -57,27 +84,13 @@ function generateOneItemForList(obj){
            $(this).closest('li').remove()
         })
     }
-
-    //callback function for adding items to the list
-    function addItems(inp) { 
-        $('ul.shopping-list').append(`<li>
-        <span class="shopping-item">${inp}</span>
-        <div class="shopping-item-controls">
-          <button class="shopping-item-toggle">
-            <span class="button-label">check</span>
-          </button>
-          <button class="shopping-item-delete">
-            <span class="button-label">delete</span>
-          </button>
-        </div>
-      </li>`)
     
 */
 function startShoppingList(){
     renderShoppingList()
-    //handleNewItemSubmit()
-   // handleItemCheckClicked()
-   // handleDeleteItemClicked()
+    handleNewItemSubmit()
+    //handleItemCheckClicked()
+    //handleDeleteItemClicked()
 }
 
 
