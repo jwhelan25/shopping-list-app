@@ -5,17 +5,15 @@ function start()  {
             const addInput = $(this).find('input[name="shopping-list-entry"]').val()
             addItems(addInput)
         })
-        //create event listener for checking items
+        //create event listener and process for checking items
         $('.shopping-item-toggle').click(function(evt){
             $(this).closest('li').find('.shopping-item').toggleClass('shopping-item__checked')
         })
-        //create event listener for deleting items
+        //create event listener and process for deleting items
         $('.shopping-item-delete').click(function(evt){
            $(this).closest('li').remove()
         })
     }
-
-
 
     //callback function for adding items to the list
     function addItems(inp) { 
