@@ -72,10 +72,8 @@ function handleItemCheckClicked(){
     
     
     $('ul.js-shopping-list').on('click','.shopping-item-toggle', function(evt){
-        console.log("handleItemCheckClicked called")
         evt.preventDefault()
         let ident = $(this).closest('li').attr('data-item-id')
-        console.log("ident is " + ident)
         toggleCheckedById(ident)
         renderShoppingList()
     })
@@ -91,28 +89,32 @@ for(let i=0;i<STORE.length;i++){
 
 ////////////////////////////////////////////////////////////////////////////////
 
-//subfunction to create new item in store after being passed the name
+//function to toggle checked variable in a given item object
+function handleDeleteItemClicked(){
+    $('ul.js-shopping-list').on('click','.shopping-item-delete', function(evt){
+        evt.preventDefault()
+        let delident = $(this).closest('li').attr('data-item-id')
+        STORE.splice(delident,1)
+        numberOfItemsInStore -= 1    
+        reassignStoreId(STORE)
+        renderShoppingList()
+    })
+}
 
-/*        //create event listener for adding items
-        $('#js-shopping-list-form').submit(function (evt) {
-            evt.preventDefault()
-            const addInput = $(this).find('input[name="shopping-list-entry"]').val()
-            addItems(addInput)
-        })
-        //create event listener and process for checking items
-        
-        //create event listener and process for deleting items
-        $('.shopping-item-delete').click(function(evt){
-           $(this).closest('li').remove()
-        })
+//subfunction to reassign the id before rerendering the page
+function reassignStoreId(arr){
+    for (let i=0;i<arr.length;i++){
+        arr[i].id = i
     }
-    
-*/
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 function startShoppingList(){
     renderShoppingList()
     handleNewItemSubmit()
     handleItemCheckClicked()
-    //handleDeleteItemClicked()
+    handleDeleteItemClicked()
 }
 
 
