@@ -44,8 +44,6 @@ function generateItemElement(obj){
   return template
 }
 
-//////////////////////////////////////////////////////////////////////////////////
-
 //function to handle the submission of new items
 function handleNewItemSubmit(){
     $('#js-shopping-list-form').submit(function (evt) {
